@@ -1,0 +1,6 @@
+{
+  "name": "Air Time Black Car & SUV Service",
+  "description": "Premier Black Sedan & SUV Chauffeur Service in Edmonton, Alberta. Serving YEG Airport, executive travel, weddings, and VIP events.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
