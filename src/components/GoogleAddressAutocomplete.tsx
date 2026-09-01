@@ -208,14 +208,14 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
       <div className="flex items-center justify-between mb-1.5">
         <label
           htmlFor={`${idPrefix}-input`}
-          className="block text-xs font-semibold text-slate-300"
+          className="block text-xs font-semibold text-[#A7A7A7]"
         >
-          {label} {required && <span className="text-[#FF5500]">*</span>}
+          {label} {required && <span className="text-[#C9A45C]">*</span>}
         </label>
 
         {selectedDetails?.isValidated && (
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-white bg-[#0033A0]/50 border border-[#0033A0] px-2 py-0.5 rounded-full">
-            <CheckCircle2 className="w-3 h-3 text-[#FF5500]" />
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#F5F3EE] bg-[#C9A45C]/20 border border-[#C9A45C]/40 px-2 py-0.5 rounded-full">
+            <CheckCircle2 className="w-3 h-3 text-[#E2C27A]" />
             <span>Google Verified GPS</span>
           </span>
         )}
@@ -223,7 +223,7 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
 
       {/* Input container */}
       <div className="relative">
-        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#FF5500] pointer-events-none">
+        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#C9A45C] pointer-events-none">
           {isPickup ? (
             <MapPin className="w-4 h-4" />
           ) : (
@@ -246,18 +246,18 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
           placeholder={placeholder}
           required={required}
           autoComplete="off"
-          className="w-full pl-10 pr-20 py-3 bg-[#041122] border border-slate-700 hover:border-slate-500 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#FF5500]/50 transition-all placeholder:text-slate-500"
+          className="w-full pl-10 pr-20 py-3 bg-[#151515] border border-white/15 hover:border-white/30 focus:border-[#C9A45C] rounded-xl text-[#F5F3EE] text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-[#C9A45C]/50 transition-all placeholder:text-neutral-500"
         />
 
         {/* Right side controls: Loading spinner, Clear button, Validation Icon */}
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-          {isLoading && <Loader2 className="w-4 h-4 text-[#FF5500] animate-spin" />}
+          {isLoading && <Loader2 className="w-4 h-4 text-[#C9A45C] animate-spin" />}
 
           {inputValue && (
             <button
               type="button"
               onClick={handleClear}
-              className="p-1 text-slate-400 hover:text-white rounded-full hover:bg-[#071B38] transition-colors"
+              className="p-1 text-[#A7A7A7] hover:text-[#F5F3EE] rounded-full hover:bg-white/10 transition-colors"
               title="Clear address"
             >
               <X className="w-3.5 h-3.5" />
@@ -266,7 +266,7 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
 
           {selectedDetails?.isValidated && (
             <div
-              className="flex items-center text-[#FF5500] pl-1"
+              className="flex items-center text-[#C9A45C] pl-1"
               title="Address Verified & Geocoded"
             >
               <CheckCircle2 className="w-4 h-4" />
@@ -277,14 +277,14 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
 
       {/* Autocomplete Dropdown List */}
       {isOpen && (
-        <div className="absolute z-50 left-0 right-0 mt-1.5 bg-[#071B38] border border-[#0033A0]/80 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl animate-in fade-in-50 zoom-in-95 duration-150 max-h-80 overflow-y-auto divide-y divide-[#0033A0]/40">
+        <div className="absolute z-50 left-0 right-0 mt-1.5 bg-[#151515] border border-white/20 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl animate-in fade-in-50 zoom-in-95 duration-150 max-h-80 overflow-y-auto divide-y divide-white/10">
           {/* Header indicator */}
-          <div className="px-3.5 py-2 bg-[#041122] border-b border-[#0033A0]/40 flex items-center justify-between text-[11px]">
-            <span className="text-white font-bold flex items-center gap-1.5">
-              <Search className="w-3 h-3 text-[#FF5500]" />
+          <div className="px-3.5 py-2 bg-[#080808] border-b border-white/10 flex items-center justify-between text-[11px]">
+            <span className="text-[#F5F3EE] font-bold flex items-center gap-1.5">
+              <Search className="w-3 h-3 text-[#C9A45C]" />
               <span>Google Places Suggestions</span>
             </span>
-            <span className="text-slate-300 text-[10px]">Select to auto-fill location</span>
+            <span className="text-[#A7A7A7] text-[10px]">Select to auto-fill location</span>
           </div>
 
           {/* List of fetched suggestions */}
@@ -303,15 +303,15 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
                     onClick={() => handleSelectSuggestion(suggestion)}
                     className={`w-full text-left px-3.5 py-2.5 flex items-start gap-3 transition-colors cursor-pointer ${
                       isSelected
-                        ? 'bg-[#0033A0]/50 text-white'
-                        : 'hover:bg-[#0C244C] text-slate-200'
+                        ? 'bg-[#C9A45C]/20 text-[#F5F3EE]'
+                        : 'hover:bg-white/5 text-[#A7A7A7] hover:text-[#F5F3EE]'
                     }`}
                   >
                     <div
                       className={`p-1.5 rounded-lg flex-shrink-0 mt-0.5 ${
                         isAirport
-                          ? 'bg-[#FF5500]/20 text-[#FF5500]'
-                          : 'bg-[#041122] text-slate-300'
+                          ? 'bg-[#C9A45C]/20 text-[#E2C27A]'
+                          : 'bg-[#080808] text-[#A7A7A7]'
                       }`}
                     >
                       {isAirport ? (
@@ -321,15 +321,15 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-xs text-white truncate flex items-center gap-2">
+                      <div className="font-semibold text-xs text-[#F5F3EE] truncate flex items-center gap-2">
                         <span>{suggestion.mainText || suggestion.description}</span>
                         {isAirport && (
-                          <span className="text-[9px] bg-[#0033A0] text-white px-1.5 py-0.2 rounded font-bold uppercase">
+                          <span className="text-[9px] bg-[#C9A45C] text-[#080808] px-1.5 py-0.2 rounded font-bold uppercase">
                             YEG Airport
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-slate-400 truncate">
+                      <div className="text-[11px] text-[#A7A7A7] truncate">
                         {suggestion.secondaryText || suggestion.description}
                       </div>
                     </div>
@@ -340,10 +340,10 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
           ) : (
             /* No Google suggestions found */
             <div className="p-4 text-center">
-              <p className="text-xs text-white font-medium mb-1">
+              <p className="text-xs text-[#F5F3EE] font-medium mb-1">
                 No matching Google addresses found for "{inputValue}"
               </p>
-              <p className="text-[11px] text-slate-300 mb-3">
+              <p className="text-[11px] text-[#A7A7A7] mb-3">
                 You can use this custom address directly, or pick one of the frequent Edmonton locations below.
               </p>
               <button
@@ -366,7 +366,7 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
                   onChange(inputValue, fullManual);
                   setIsOpen(false);
                 }}
-                className="px-3.5 py-1.5 rounded-lg bg-[#FF5500]/20 hover:bg-[#FF5500]/30 text-white text-xs font-bold transition-colors border border-[#FF5500]/40"
+                className="px-3.5 py-1.5 rounded-lg bg-[#C9A45C]/20 hover:bg-[#C9A45C]/30 text-[#E2C27A] text-xs font-bold transition-colors border border-[#C9A45C]/40"
               >
                 Use "{inputValue}" as Manual Location
               </button>
@@ -374,8 +374,8 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
           )}
 
           {/* Popular Edmonton Landmarks Section */}
-          <div className="p-3 bg-[#041122] border-t border-[#0033A0]/40">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-slate-300 block mb-2">
+          <div className="p-3 bg-[#080808] border-t border-white/10">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#A7A7A7] block mb-2">
               Frequent Edmonton & Alberta Hubs
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
@@ -384,12 +384,12 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
                   key={p.name}
                   type="button"
                   onClick={() => handleSelectPresetPlace(p)}
-                  className="px-2.5 py-1.5 rounded-lg bg-[#071B38] hover:bg-[#0C244C] border border-[#0033A0]/50 hover:border-[#FF5500]/50 text-left text-[11px] text-slate-200 hover:text-white transition-all flex items-center gap-2 group cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-lg bg-[#151515] hover:bg-[#222222] border border-white/10 hover:border-[#C9A45C]/50 text-left text-[11px] text-[#A7A7A7] hover:text-[#F5F3EE] transition-all flex items-center gap-2 group cursor-pointer"
                 >
                   {p.isAirport ? (
-                    <Plane className="w-3 h-3 text-[#FF5500] group-hover:scale-110 transition-transform" />
+                    <Plane className="w-3 h-3 text-[#C9A45C] group-hover:scale-110 transition-transform" />
                   ) : (
-                    <Building2 className="w-3 h-3 text-slate-400 group-hover:text-[#FF5500] transition-colors" />
+                    <Building2 className="w-3 h-3 text-[#A7A7A7] group-hover:text-[#C9A45C] transition-colors" />
                   )}
                   <span className="truncate">{p.name.split('(')[0]}</span>
                 </button>
@@ -403,26 +403,26 @@ export const GoogleAddressAutocomplete: React.FC<GoogleAddressAutocompleteProps>
       {selectedDetails && (
         <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[11px]">
           {selectedDetails.city && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#041122] border border-[#0033A0]/50 text-slate-300">
-              <span className="text-slate-400">City:</span>
-              <strong className="text-white">{selectedDetails.city}</strong>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#151515] border border-white/10 text-[#A7A7A7]">
+              <span className="text-neutral-500">City:</span>
+              <strong className="text-[#F5F3EE]">{selectedDetails.city}</strong>
               {selectedDetails.province && <span>, {selectedDetails.province}</span>}
               {selectedDetails.postalCode && (
-                <span className="text-slate-400 font-mono">({selectedDetails.postalCode})</span>
+                <span className="text-neutral-500 font-mono">({selectedDetails.postalCode})</span>
               )}
             </span>
           )}
 
           {(isNorthOfYellowhead(selectedDetails) || isNorthOfYellowhead(value)) && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#0033A0]/40 border border-[#0033A0] text-white font-semibold">
-              <Navigation className="w-3 h-3 text-[#FF5500]" />
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#C9A45C]/15 border border-[#C9A45C]/30 text-[#E2C27A] font-semibold">
+              <Navigation className="w-3 h-3 text-[#C9A45C]" />
               <span>Anthony Henday Ring Road Route</span>
             </span>
           )}
 
           {selectedDetails.isAirport && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#041122] border border-[#FF5500]/50 text-white font-semibold">
-              <Plane className="w-3 h-3 text-[#FF5500]" />
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[#151515] border border-[#C9A45C]/40 text-[#E2C27A] font-semibold">
+              <Plane className="w-3 h-3 text-[#C9A45C]" />
               <span>YEG Airport Transfer</span>
             </span>
           )}

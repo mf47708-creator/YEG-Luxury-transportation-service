@@ -51,25 +51,25 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* Top micro announcement bar in Royal Blue, Orange and Crisp White */}
-      <div className="bg-[#020813] border-b border-[#0033A0]/40 text-slate-200 text-xs py-1.5 px-4 hidden md:block backdrop-blur-md">
+      {/* Top micro announcement bar in Deep Black and Champagne Gold */}
+      <div className="bg-[#080808] border-b border-[#C9A45C]/20 text-[#A7A7A7] text-xs py-1.5 px-4 hidden md:block backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3.5">
             {/* Live Fleet indicator */}
-            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#071B38] border border-[#0033A0]/60 text-white text-[11px] font-semibold shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF5500] animate-pulse" />
+            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#151515] border border-[#C9A45C]/40 text-[#F5F3EE] text-[11px] font-semibold shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C9A45C] animate-pulse" />
               <span>Chauffeurs On Duty</span>
             </span>
 
             {/* Flight Radar Sync */}
-            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#071B38] border border-blue-900/60 text-slate-200 text-[11px] font-medium">
-              <Sparkles className="w-3 h-3 text-[#FF7700]" />
+            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#151515] border border-white/10 text-[#F5F3EE] text-[11px] font-medium">
+              <Sparkles className="w-3 h-3 text-[#E2C27A]" />
               <span>YEG Flight Tracking</span>
             </span>
 
             {/* 15-Min Early Guarantee */}
-            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF5500]/15 border border-[#FF5500]/40 text-[#FF8C00] text-[11px] font-bold">
-              <Clock className="w-3 h-3 text-[#FF5500]" />
+            <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#C9A45C]/15 border border-[#C9A45C]/40 text-[#E2C27A] text-[11px] font-bold">
+              <Clock className="w-3 h-3 text-[#C9A45C]" />
               <span>15-Min Early Guarantee</span>
             </span>
           </div>
@@ -78,19 +78,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             {onOpenSmsCenter && (
               <button
                 onClick={onOpenSmsCenter}
-                className="text-[11px] uppercase tracking-wider text-white hover:text-[#FF8C00] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#071B38] hover:bg-[#0C244C] px-2.5 py-0.5 rounded-full border border-blue-900/70"
+                className="text-[11px] uppercase tracking-wider text-[#F5F3EE] hover:text-[#E2C27A] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#151515] hover:bg-[#202020] px-2.5 py-0.5 rounded-full border border-white/15"
                 title="Open SMS Notification Dispatch Center"
               >
-                <Smartphone className="w-3 h-3 text-[#FF5500]" />
+                <Smartphone className="w-3 h-3 text-[#C9A45C]" />
                 <span>SMS Alert Center</span>
               </button>
             )}
 
             <button
               onClick={onOpenDispatch}
-              className="text-[11px] uppercase tracking-wider text-white hover:text-[#FF8C00] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#071B38] px-2.5 py-0.5 rounded-full border border-blue-900/70"
+              className="text-[11px] uppercase tracking-wider text-[#F5F3EE] hover:text-[#E2C27A] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#151515] hover:bg-[#202020] px-2.5 py-0.5 rounded-full border border-[#C9A45C]/40"
             >
-              <span className="w-2 h-2 rounded-full bg-[#FF5500] animate-ping inline-block"></span>
+              <span className="w-2 h-2 rounded-full bg-[#C9A45C] animate-ping inline-block"></span>
               <span>24/7 Live Desk</span>
             </button>
             <a
@@ -100,9 +100,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onCallClick();
                 }
               }}
-              className="flex items-center gap-1.5 font-bold text-white hover:text-[#FF8C00] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 font-bold text-[#F5F3EE] hover:text-[#E2C27A] transition-colors cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5 text-[#FF5500]" />
+              <Phone className="w-3.5 h-3.5 text-[#C9A45C]" />
               <span>+1 (587) 728-2828</span>
             </a>
           </div>
@@ -113,8 +113,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav
         className={`transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#030c1a]/95 backdrop-blur-md border-b border-[#0033A0]/40 py-3.5 shadow-2xl shadow-[#020813]/90'
-            : 'bg-gradient-to-b from-[#020813]/95 via-[#030c1a]/85 to-transparent py-4 md:py-5'
+            ? 'bg-[#080808]/95 backdrop-blur-md border-b border-[#C9A45C]/25 py-3.5 shadow-2xl shadow-black/80'
+            : 'bg-gradient-to-b from-[#080808]/95 via-[#080808]/85 to-transparent py-4 md:py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -126,7 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <BrandLogo variant="full" />
           </div>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links: Black background with white text and gold hover effect */}
           <div className="hidden lg:flex items-center space-x-1 xl:space-x-2">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
@@ -136,20 +136,20 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleLinkClick(link.id)}
                   className={`px-3.5 py-2 text-sm font-medium tracking-wide uppercase transition-all duration-200 relative rounded-md ${
                     isActive
-                      ? 'text-white font-bold bg-[#0033A0]/30 border border-[#0033A0]/50'
-                      : 'text-slate-300 hover:text-white hover:bg-white/5'
+                      ? 'text-[#F5F3EE] font-bold bg-[#151515] border border-[#C9A45C]/50'
+                      : 'text-[#A7A7A7] hover:text-[#F5F3EE] hover:bg-white/5'
                   }`}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#FF5500] rounded-full shadow-[0_0_8px_#ff5500]" />
+                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#C9A45C] rounded-full shadow-[0_0_8px_#C9A45C]" />
                   )}
                 </button>
               );
             })}
           </div>
 
-          {/* Right Action CTA Buttons */}
+          {/* Right Action CTA Buttons: Champagne Gold with Black Text */}
           <div className="hidden sm:flex items-center gap-3">
             <a
               href="tel:+15877282828"
@@ -158,17 +158,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onCallClick();
                 }
               }}
-              className="px-3.5 py-2.5 rounded-lg border border-slate-600 bg-[#071B38] text-white hover:bg-[#0C244C] hover:border-[#FF5500] hover:text-[#FF8C00] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all duration-200 cursor-pointer shadow-md"
+              className="px-3.5 py-2.5 rounded-lg border border-[#C9A45C]/40 bg-[#151515] text-[#F5F3EE] hover:bg-[#202020] hover:border-[#E2C27A] hover:text-[#E2C27A] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all duration-200 cursor-pointer shadow-md"
             >
-              <Phone className="w-3.5 h-3.5 text-[#FF5500]" />
+              <Phone className="w-3.5 h-3.5 text-[#C9A45C]" />
               <span>Call Now</span>
             </a>
 
             <button
               onClick={() => handleLinkClick('booking')}
-              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] hover:from-[#FFA040] hover:to-[#FF5500] text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-[#FF5500]/30 hover:shadow-[#FF5500]/50 transition-all duration-200 flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 border border-orange-300/40"
+              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-[#E2C27A] via-[#C9A45C] to-[#A7843B] hover:from-[#FFF1C5] hover:to-[#C9A45C] text-[#080808] font-black text-xs uppercase tracking-wider shadow-lg shadow-[#C9A45C]/30 hover:shadow-[#C9A45C]/50 transition-all duration-200 flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 border border-[#FFF1C5]/40"
             >
-              <Calendar className="w-4 h-4 text-white" />
+              <Calendar className="w-4 h-4 text-[#080808]" />
               <span>Book Now</span>
             </button>
           </div>
@@ -182,18 +182,18 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onCallClick();
                 }
               }}
-              className="p-2 rounded-lg bg-[#071B38] border border-[#0033A0]/60 text-white cursor-pointer"
+              className="p-2 rounded-lg bg-[#151515] border border-[#C9A45C]/40 text-[#C9A45C] cursor-pointer"
               aria-label="Call Air Time"
             >
-              <Phone className="w-4 h-4 text-[#FF5500]" />
+              <Phone className="w-4 h-4 text-[#C9A45C]" />
             </a>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-[#071B38] transition-colors"
+              className="p-2 rounded-lg text-[#F5F3EE] hover:text-[#E2C27A] hover:bg-[#151515] transition-colors"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6 text-[#FF5500]" /> : <Menu className="w-6 h-6 text-white" />}
+              {mobileMenuOpen ? <X className="w-6 h-6 text-[#C9A45C]" /> : <Menu className="w-6 h-6 text-[#F5F3EE]" />}
             </button>
           </div>
         </div>
@@ -201,7 +201,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#030c1a] border-b border-[#0033A0]/40 px-6 py-6 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top duration-300">
+        <div className="lg:hidden bg-[#080808] border-b border-[#C9A45C]/30 px-6 py-6 shadow-2xl backdrop-blur-xl animate-in slide-in-from-top duration-300">
           <div className="flex flex-col space-y-3">
             {navLinks.map((link) => (
               <button
@@ -209,34 +209,34 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => handleLinkClick(link.id)}
                 className={`text-left py-2.5 px-3 rounded-lg text-sm font-semibold uppercase tracking-wider transition-colors ${
                   activeSection === link.id
-                    ? 'bg-[#0033A0]/25 text-white border border-[#FF5500]/50 font-bold'
-                    : 'text-slate-300 hover:bg-[#071B38] hover:text-white'
+                    ? 'bg-[#151515] text-[#F5F3EE] border border-[#C9A45C]/50 font-bold'
+                    : 'text-[#A7A7A7] hover:bg-[#151515] hover:text-[#F5F3EE]'
                 }`}
               >
                 {link.label}
               </button>
             ))}
 
-            <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
+            <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
               <button
                 onClick={() => handleLinkClick('booking')}
-                className="w-full py-3 rounded-lg bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#FF5500]/30 border border-orange-300/40"
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-[#E2C27A] via-[#C9A45C] to-[#A7843B] text-[#080808] font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#C9A45C]/30 border border-[#FFF1C5]/40"
               >
-                <Calendar className="w-4 h-4 text-white" />
+                <Calendar className="w-4 h-4 text-[#080808]" />
                 <span>Reserve Chauffeur Now</span>
               </button>
 
               <a
                 href="tel:+15877282828"
-                className="w-full py-3 rounded-lg border border-slate-700 bg-[#071B38] text-white font-semibold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#0C244C] hover:border-[#FF5500]"
+                className="w-full py-3 rounded-lg border border-[#C9A45C]/40 bg-[#151515] text-[#F5F3EE] font-semibold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#202020] hover:border-[#E2C27A]"
               >
-                <Phone className="w-4 h-4 text-[#FF5500]" />
+                <Phone className="w-4 h-4 text-[#C9A45C]" />
                 <span>Call +1 (587) 728-2828</span>
               </a>
 
-              <div className="flex items-center justify-between text-xs text-slate-400 pt-2 px-1">
+              <div className="flex items-center justify-between text-xs text-[#A7A7A7] pt-2 px-1">
                 <span>Edmonton • YEG Airport • Alberta</span>
-                <span className="text-[#FF7700] font-bold">24/7 Available</span>
+                <span className="text-[#C9A45C] font-bold">24/7 Available</span>
               </div>
             </div>
           </div>
@@ -245,3 +245,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
+
