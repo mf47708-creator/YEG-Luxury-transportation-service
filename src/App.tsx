@@ -195,23 +195,23 @@ export function App() {
       />
 
       {/* Mobile Sticky Quick Action Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0c0c0e]/95 backdrop-blur-lg border-t border-amber-500/30 p-3 flex items-center gap-3">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#030c1a]/95 backdrop-blur-lg border-t border-[#0033A0]/50 p-3 flex items-center gap-3 shadow-2xl">
         <a
           href="tel:+15877282828"
           onClick={() => {
             handleInitiateCall();
           }}
-          className="flex-1 py-3 rounded-xl bg-stone-900 border border-amber-500/40 text-amber-400 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+          className="flex-1 py-3 rounded-xl bg-[#071B38] border-2 border-white/80 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md"
         >
-          <Phone className="w-4 h-4 text-amber-500" />
+          <Phone className="w-4 h-4 text-[#FF5500]" />
           <span>Call Dispatch</span>
         </a>
 
         <button
           onClick={() => handleNavigate('booking')}
-          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer"
+          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#FF5500]/30 cursor-pointer border border-orange-300/40"
         >
-          <Calendar className="w-4 h-4" />
+          <Calendar className="w-4 h-4 text-white" />
           <span>Book Chauffeur</span>
         </button>
       </div>

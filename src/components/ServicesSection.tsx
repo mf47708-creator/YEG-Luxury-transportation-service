@@ -48,20 +48,20 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
   };
 
   return (
-    <section id="services" className="py-24 bg-black relative border-t border-neutral-800">
+    <section id="services" className="py-24 bg-[#030c1a] relative border-t border-[#0033A0]/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-900 border border-[#D4AF37]/50 mb-3">
-            <Crown className="w-4 h-4 text-[#D4AF37]" />
-            <span className="text-xs uppercase tracking-widest font-bold text-[#F5D77F]">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#071B38] border border-[#0033A0]/60 mb-3 shadow-md">
+            <Crown className="w-4 h-4 text-[#FF5500]" />
+            <span className="text-xs uppercase tracking-widest font-bold text-white">
               Chauffeur & Transportation Services
             </span>
           </div>
           <h2 className="font-cinzel text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            First-Class <span className="text-[#D4AF37]">Luxury Services</span>
+            First-Class <span className="text-[#FF6B00]">Luxury Services</span>
           </h2>
-          <p className="text-neutral-300 text-base sm:text-lg">
+          <p className="text-slate-300 text-base sm:text-lg">
             From seamless Edmonton International Airport (YEG) transfers to VIP galas, weddings, and executive travel across Alberta, our fleet delivers unrivaled sophistication.
           </p>
         </div>
@@ -72,7 +72,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
             return (
               <div
                 key={service.id}
-                className="group bg-neutral-900 border border-neutral-800 hover:border-[#D4AF37]/60 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col justify-between"
+                className="group bg-[#071B38] border border-[#0033A0]/50 hover:border-[#FF5500]/70 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col justify-between"
               >
                 {/* Image banner */}
                 <div className="relative h-48 overflow-hidden">
@@ -81,15 +81,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
                     alt={service.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-[0.75] group-hover:brightness-90"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-black/40" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#071B38] via-transparent to-black/40" />
 
                   {/* Service Icon Badge */}
-                  <div className="absolute top-3 left-3 p-2.5 rounded-xl bg-black/85 border border-[#D4AF37]/40 text-[#D4AF37] backdrop-blur-md">
+                  <div className="absolute top-3 left-3 p-2.5 rounded-xl bg-[#020813]/85 border border-[#0033A0]/60 text-[#FF5500] backdrop-blur-md">
                     {getIcon(service.iconName)}
                   </div>
 
                   {service.badge && (
-                    <div className="absolute top-3 right-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full shadow-md bg-gradient-to-r from-[#F5D77F] via-[#D4AF37] to-[#AA771C] text-black">
+                    <div className="absolute top-3 right-3 text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-full shadow-md bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] text-white border border-orange-300/40">
                       {service.badge}
                     </div>
                   )}
@@ -98,26 +98,26 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
                 {/* Card Body */}
                 <div className="p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-cinzel text-xl font-bold text-white mb-2 group-hover:text-[#F5D77F] transition-colors">
+                    <h3 className="font-cinzel text-xl font-bold text-white mb-2 group-hover:text-[#FF7700] transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-neutral-400 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
+                    <p className="text-slate-300 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-4">
                       {service.description}
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-neutral-800 flex items-center justify-between">
+                  <div className="pt-4 border-t border-[#0033A0]/40 flex items-center justify-between">
                     <button
                       onClick={() => setSelectedService(service)}
-                      className="text-xs uppercase font-bold text-[#D4AF37] hover:text-[#F5D77F] flex items-center gap-1 cursor-pointer transition-colors"
+                      className="text-xs uppercase font-bold text-slate-300 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <span>View Details</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 text-[#FF5500]" />
                     </button>
 
                     <button
                       onClick={() => onBookService(service.title)}
-                      className="px-3 py-1.5 rounded-lg bg-neutral-800 hover:bg-[#D4AF37] hover:text-black text-neutral-300 hover:font-bold text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer border border-neutral-700"
+                      className="px-3 py-1.5 rounded-lg bg-[#041122] hover:bg-[#FF5500] hover:text-white text-slate-200 hover:font-bold text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer border border-[#0033A0]/50"
                     >
                       Reserve
                     </button>
@@ -131,11 +131,11 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
 
       {/* Service Details Modal */}
       {selectedService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-neutral-900 border border-[#D4AF37]/60 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#020813]/85 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#071B38] border border-[#0033A0]/60 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl relative">
             <button
               onClick={() => setSelectedService(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-neutral-300 hover:text-white z-10 cursor-pointer"
+              className="absolute top-4 right-4 p-2 rounded-full bg-black/70 text-slate-300 hover:text-white z-10 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -146,9 +146,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
                 alt={selectedService.title}
                 className="w-full h-full object-cover brightness-[0.7]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071B38] via-transparent to-transparent" />
               <div className="absolute bottom-4 left-6">
-                <span className="text-xs uppercase font-bold text-[#D4AF37] tracking-wider">
+                <span className="text-xs uppercase font-bold text-[#FF5500] tracking-wider">
                   Air Time Chauffeur Experience
                 </span>
                 <h3 className="font-cinzel text-2xl sm:text-3xl font-bold text-white">
@@ -158,31 +158,31 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
             </div>
 
             <div className="p-6">
-              <p className="text-neutral-300 text-sm leading-relaxed mb-6 font-light">
+              <p className="text-slate-300 text-sm leading-relaxed mb-6 font-light">
                 {selectedService.description}
               </p>
 
-              <h4 className="text-xs uppercase tracking-widest font-bold text-[#D4AF37] mb-3">
+              <h4 className="text-xs uppercase tracking-widest font-black text-[#FF5500] mb-3">
                 Key Inclusions & Amenities:
               </h4>
 
               <div className="space-y-2.5 mb-6">
                 {selectedService.highlights.map((highlight, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-neutral-300">
-                    <CheckCircle2 className="w-4 h-4 text-[#D4AF37] flex-shrink-0 mt-0.5" />
+                  <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
+                    <CheckCircle2 className="w-4 h-4 text-[#FF5500] flex-shrink-0 mt-0.5" />
                     <span>{highlight}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-neutral-800">
+              <div className="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-[#0033A0]/40">
                 <button
                   onClick={() => {
                     const title = selectedService.title;
                     setSelectedService(null);
                     onBookService(title);
                   }}
-                  className="w-full sm:flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#F5D77F] via-[#D4AF37] to-[#AA771C] hover:from-[#FFF8D6] hover:to-[#D4AF37] text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#D4AF37]/25 border border-[#FFF8D6]/60"
+                  className="w-full sm:flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] hover:from-[#FFA040] hover:to-[#FF5500] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[#FF5500]/30 border border-orange-300/40"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Book {selectedService.title}</span>
@@ -190,9 +190,9 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({ onBookService 
 
                 <a
                   href="tel:+15877282828"
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-neutral-700 hover:border-[#D4AF37] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-slate-600 bg-[#041122] hover:border-[#FF5500] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#071B38] transition-colors"
                 >
-                  <Phone className="w-4 h-4 text-[#D4AF37]" />
+                  <Phone className="w-4 h-4 text-[#FF5500]" />
                   <span>Call Dispatch</span>
                 </a>
               </div>

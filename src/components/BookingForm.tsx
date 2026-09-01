@@ -125,52 +125,66 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     }
   }, [initialFareResult, initialVehicle]);
 
-  // Recalculate route distance whenever pickup or dropoff details change
+  // Recalculate route and fare whenever inputs change
   useEffect(() => {
-    let isCancelled = false;
+    let isMounted = true;
 
-    async function updateRoute() {
-      if (!pickupDetails || !dropoffDetails || !formData.pickupAddress || !formData.destination) {
-        return;
-      }
+    async function computeLiveFare() {
+      if (!formData.pickupAddress || !formData.destination) return;
 
       setIsCalculatingRoute(true);
       try {
-        const metrics = await calculateRouteDistance(pickupDetails, dropoffDetails);
-        if (!isCancelled) {
-          setRouteMetrics(metrics);
-          // Recalculate fare with new Google calculated distance
-          const fare = calculateEdmontonAirportFare(
-            formData.pickupAddress,
-            formData.destination,
-            metrics.distanceKm,
-            formData.vehicleType,
-            formData.passengers,
-            formData.luggage
-          );
+        const metrics = await calculateRouteDistance(
+          pickupDetails || formData.pickupAddress,
+          dropoffDetails || formData.destination
+        );
+
+        if (!isMounted) return;
+
+        setRouteMetrics(metrics);
+
+        const newFare = calculateEdmontonAirportFare(
+          formData.pickupAddress,
+          formData.destination,
+          metrics.distanceKm,
+          formData.vehicleType,
+          formData.passengers,
+          formData.luggage
+        );
+
+        setFormData((prev) => ({
+          ...prev,
+          calculatedFare: newFare
+        }));
+      } catch (err) {
+        // Fallback calculation
+        const fallbackFare = calculateEdmontonAirportFare(
+          formData.pickupAddress,
+          formData.destination,
+          routeMetrics?.distanceKm || 31.4,
+          formData.vehicleType,
+          formData.passengers,
+          formData.luggage
+        );
+        if (isMounted) {
           setFormData((prev) => ({
             ...prev,
-            calculatedFare: fare,
-            pickupDetails: pickupDetails,
-            dropoffDetails: dropoffDetails,
-            routeMetrics: metrics
+            calculatedFare: fallbackFare
           }));
         }
-      } catch (err) {
-        // Fallback to existing distance calculation
       } finally {
-        if (!isCancelled) {
+        if (isMounted) {
           setIsCalculatingRoute(false);
         }
       }
     }
 
     const timer = setTimeout(() => {
-      updateRoute();
-    }, 300);
+      computeLiveFare();
+    }, 250);
 
     return () => {
-      isCancelled = true;
+      isMounted = false;
       clearTimeout(timer);
     };
   }, [
@@ -185,68 +199,57 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     dropoffDetails?.lng
   ]);
 
-  // Handle Pickup Address Change from Autocomplete
-  const handlePickupChange = (address: string, details?: AddressDetails) => {
-    const updatedDetails = details || (parseAddressString(address) as AddressDetails);
-    setPickupDetails(updatedDetails);
-    setFormData((prev) => ({
-      ...prev,
-      pickupAddress: address,
-      pickupDetails: updatedDetails
-    }));
-  };
-
-  // Handle Dropoff Address Change from Autocomplete
-  const handleDropoffChange = (address: string, details?: AddressDetails) => {
-    const updatedDetails = details || (parseAddressString(address) as AddressDetails);
-    setDropoffDetails(updatedDetails);
-    setFormData((prev) => ({
-      ...prev,
-      destination: address,
-      dropoffDetails: updatedDetails
-    }));
-  };
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'passengers' || name === 'luggage' ? parseInt(value) || 1 : value
+      [name]:
+        name === 'passengers' || name === 'luggage'
+          ? parseInt(value) || 0
+          : value
     }));
+  };
+
+  const handlePickupChange = (address: string, details?: AddressDetails) => {
+    setFormData((prev) => ({ ...prev, pickupAddress: address }));
+    if (details) setPickupDetails(details);
+  };
+
+  const handleDropoffChange = (address: string, details?: AddressDetails) => {
+    setFormData((prev) => ({ ...prev, destination: address }));
+    if (details) setDropoffDetails(details);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
-
-    // Validation checks for addresses
-    if (!formData.pickupAddress || formData.pickupAddress.trim().length < 4) {
-      setErrorMessage('Please provide a complete pickup address using Google Places search or manual entry.');
-      return;
-    }
-
-    if (!formData.destination || formData.destination.trim().length < 4) {
-      setErrorMessage('Please provide a complete destination address using Google Places search or manual entry.');
-      return;
-    }
-
-    if (!formData.fullName || !formData.phone || !formData.pickupDate || !formData.pickupTime) {
-      setErrorMessage('Please fill in all mandatory contact, itinerary, and schedule fields.');
-      return;
-    }
-
     setLoading(true);
 
     try {
+      if (!formData.fullName.trim()) throw new Error('Please enter your full name');
+      if (!formData.phone.trim()) throw new Error('Please provide a valid contact phone number');
+      if (!formData.pickupAddress.trim()) throw new Error('Please specify a pickup location');
+      if (!formData.destination.trim()) throw new Error('Please specify a destination');
+
       let bookingData: BookingRecord;
 
       const submissionPayload = {
-        ...formData,
-        pickupDetails,
-        dropoffDetails,
-        routeMetrics
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        pickupAddress: formData.pickupAddress,
+        destination: formData.destination,
+        pickupDate: formData.pickupDate,
+        pickupTime: formData.pickupTime,
+        passengers: formData.passengers,
+        luggage: formData.luggage,
+        vehicleType: formData.vehicleType,
+        flightNumber: formData.flightNumber || 'None provided',
+        specialInstructions: formData.specialInstructions || 'None provided',
+        promoCode: formData.promoCode || 'None',
+        calculatedFare: formData.calculatedFare
       };
 
       try {
@@ -285,13 +288,13 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         }
       }
 
-      // Trigger royal gold celebratory confetti animation
+      // Celebratory Oilers blue and orange confetti animation
       try {
         confetti({
           particleCount: 90,
           spread: 80,
           origin: { y: 0.6 },
-          colors: ['#F59E0B', '#D97706', '#FFFFFF', '#FBBF24', '#10B981']
+          colors: ['#0033A0', '#FF5500', '#FFFFFF', '#071B38', '#FFA040']
         });
       } catch (err) {
         // Ignore confetti failure
@@ -337,32 +340,32 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   };
 
   return (
-    <section id="booking" className="py-24 bg-[#080809] relative border-t border-stone-800">
+    <section id="booking" className="py-24 bg-[#020813] relative border-t border-[#0033A0]/40">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 mb-3">
-            <CalendarIcon className="w-4 h-4 text-amber-400" />
-            <span className="text-xs uppercase tracking-widest font-bold text-amber-400">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#071B38] border border-[#0033A0]/60 mb-3">
+            <CalendarIcon className="w-4 h-4 text-[#FF5500]" />
+            <span className="text-xs uppercase tracking-widest font-black text-white">
               Online Chauffeur Reservation
             </span>
           </div>
           <h2 className="font-cinzel text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            Reserve Your <span className="text-gold-gradient">Executive Chauffeur</span>
+            Reserve Your <span className="text-[#FF5500]">Executive Chauffeur</span>
           </h2>
-          <p className="text-stone-300 text-sm sm:text-base">
+          <p className="text-slate-300 text-sm sm:text-base">
             Live Google Maps address validation, driving distance calculation, flight tracking, and pristine luxury vehicles across Edmonton & Alberta.
           </p>
         </div>
 
         {/* Successful Booking Confirmation View */}
         {submittedBooking ? (
-          <div className="bg-[#121216] border-2 border-amber-500/50 rounded-3xl p-8 sm:p-12 shadow-2xl shadow-amber-500/10 text-center animate-in zoom-in-95 duration-500">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 mx-auto flex items-center justify-center text-black mb-6 shadow-xl shadow-amber-500/30">
+          <div className="bg-[#071B38] border-2 border-[#0033A0]/70 rounded-3xl p-8 sm:p-12 shadow-2xl text-center animate-in zoom-in-95 duration-500">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#FF7700] via-[#FF5500] to-[#E63900] mx-auto flex items-center justify-center text-white mb-6 shadow-xl shadow-[#FF5500]/30 border border-orange-300/40">
               <CheckCircle2 className="w-12 h-12 stroke-[2.5]" />
             </div>
 
-            <span className="text-xs uppercase font-bold tracking-widest text-amber-400 block mb-2">
+            <span className="text-xs uppercase font-black tracking-widest text-[#FF5500] block mb-2">
               Reservation Dispatched & Confirmed
             </span>
 
@@ -371,46 +374,46 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             </h3>
 
             {/* Exactly specified confirmation message */}
-            <div className="bg-black/60 border border-amber-500/30 rounded-2xl p-6 mb-8 max-w-2xl mx-auto text-left">
-              <p className="font-serif-luxury italic text-lg sm:text-xl text-amber-300 text-center leading-relaxed mb-4">
+            <div className="bg-[#041122] border border-[#0033A0]/60 rounded-2xl p-6 mb-8 max-w-2xl mx-auto text-left">
+              <p className="font-serif-luxury italic text-lg sm:text-xl text-white text-center leading-relaxed mb-4">
                 “Thank you for booking with Air Time Black Car & SUV SERVICE.
                 Your booking request has been received successfully.
                 One of our dispatchers will contact you shortly to confirm your reservation.”
               </p>
 
-              <div className="pt-4 border-t border-stone-800 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-stone-300">
+              <div className="pt-4 border-t border-[#0033A0]/40 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-300">
                 <div>
-                  <span className="text-stone-400 block">Booking Reference:</span>
-                  <span className="font-cinzel font-bold text-base text-amber-400">
+                  <span className="text-slate-400 block">Booking Reference:</span>
+                  <span className="font-cinzel font-bold text-base text-[#FF5500]">
                     {submittedBooking.id}
                   </span>
                 </div>
                 <div>
-                  <span className="text-stone-400 block">Lead Guest:</span>
+                  <span className="text-slate-400 block">Lead Guest:</span>
                   <span className="font-semibold text-white">{submittedBooking.fullName}</span>
                 </div>
                 <div>
-                  <span className="text-stone-400 block">Date & Time:</span>
+                  <span className="text-slate-400 block">Date & Time:</span>
                   <span className="font-semibold text-white">
                     {submittedBooking.pickupDate} at {submittedBooking.pickupTime}
                   </span>
                 </div>
                 <div>
-                  <span className="text-stone-400 block">Vehicle:</span>
-                  <span className="font-semibold text-amber-400">{submittedBooking.vehicleType}</span>
+                  <span className="text-slate-400 block">Vehicle:</span>
+                  <span className="font-semibold text-[#FF7700]">{submittedBooking.vehicleType}</span>
                 </div>
                 <div>
-                  <span className="text-stone-400 block">Pickup Location:</span>
-                  <span className="font-medium text-stone-200">{submittedBooking.pickupAddress}</span>
+                  <span className="text-slate-400 block">Pickup Location:</span>
+                  <span className="font-medium text-slate-200">{submittedBooking.pickupAddress}</span>
                 </div>
                 <div>
-                  <span className="text-stone-400 block">Destination:</span>
-                  <span className="font-medium text-stone-200">{submittedBooking.destination}</span>
+                  <span className="text-slate-400 block">Destination:</span>
+                  <span className="font-medium text-slate-200">{submittedBooking.destination}</span>
                 </div>
                 {submittedBooking.calculatedFare?.totalPrice ? (
-                  <div className="sm:col-span-2 pt-2 border-t border-stone-800/80 flex items-center justify-between">
-                    <span className="text-stone-400">Estimated Total Fare:</span>
-                    <span className="font-cinzel font-bold text-amber-400 text-base">
+                  <div className="sm:col-span-2 pt-2 border-t border-[#0033A0]/40 flex items-center justify-between">
+                    <span className="text-slate-400">Estimated Total Fare:</span>
+                    <span className="font-cinzel font-bold text-[#FF5500] text-base">
                       ${submittedBooking.calculatedFare.totalPrice.toFixed(2)} CAD
                     </span>
                   </div>
@@ -420,36 +423,36 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Automated Dispatch Notifications Verified */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-8 text-left text-xs">
-              <div className="p-4 rounded-xl bg-[#18181d] border border-stone-800 flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 flex-shrink-0">
+              <div className="p-4 rounded-xl bg-[#041122] border border-[#0033A0]/50 flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-[#FF5500]/15 text-[#FF5500] flex-shrink-0">
                   <Phone className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-white">SMS Notification</span>
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-semibold">
+                    <span className="text-[10px] bg-[#0033A0] text-white px-1.5 py-0.5 rounded font-bold">
                       Dispatched
                     </span>
                   </div>
-                  <p className="text-stone-400 text-[11px] mt-0.5">
-                    Sent to primary dispatch line: <span className="text-amber-400 font-mono">+1 (587) 728-2828</span>
+                  <p className="text-slate-400 text-[11px] mt-0.5">
+                    Sent to primary dispatch line: <span className="text-[#FF5500] font-mono font-bold">+1 (587) 728-2828</span>
                   </p>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-[#18181d] border border-stone-800 flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 flex-shrink-0">
+              <div className="p-4 rounded-xl bg-[#041122] border border-[#0033A0]/50 flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-[#0033A0]/30 text-white flex-shrink-0">
                   <Mail className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-white">Email Notification</span>
-                    <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-semibold">
+                    <span className="text-[10px] bg-[#0033A0] text-white px-1.5 py-0.5 rounded font-bold">
                       Dispatched
                     </span>
                   </div>
-                  <p className="text-stone-400 text-[11px] mt-0.5">
-                    Sent to: <span className="text-amber-400 font-mono">limoairtime@gmail.com</span>
+                  <p className="text-slate-400 text-[11px] mt-0.5">
+                    Sent to: <span className="text-white font-mono">limoairtime@gmail.com</span>
                   </p>
                 </div>
               </div>
@@ -460,25 +463,25 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               <button
                 type="button"
                 onClick={copyBookingId}
-                className="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-5 py-3 rounded-xl bg-[#041122] hover:bg-[#0C244C] border border-[#0033A0]/60 text-slate-200 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
               >
-                {copiedRef ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copiedRef ? <Check className="w-4 h-4 text-[#FF5500]" /> : <Copy className="w-4 h-4 text-[#FF5500]" />}
                 <span>{copiedRef ? 'Reference Copied' : 'Copy Reference'}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-5 py-3 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                className="px-5 py-3 rounded-xl bg-[#041122] hover:bg-[#0C244C] border border-[#0033A0]/60 text-slate-200 font-bold text-xs uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
               >
-                <Printer className="w-4 h-4" />
+                <Printer className="w-4 h-4 text-slate-300" />
                 <span>Print Confirmation</span>
               </button>
 
               <button
                 type="button"
                 onClick={resetForm}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-black font-extrabold text-xs uppercase tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg shadow-amber-500/20"
+                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] hover:from-[#FFA040] hover:to-[#FF5500] text-white font-black text-xs uppercase tracking-wider transition-all hover:scale-105 cursor-pointer shadow-lg shadow-[#FF5500]/30 border border-orange-300/40"
               >
                 Make Another Reservation
               </button>
@@ -488,7 +491,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           /* Main Booking Form */
           <form
             onSubmit={handleSubmit}
-            className="bg-[#111115] border border-stone-800 rounded-3xl p-6 sm:p-10 shadow-2xl"
+            className="bg-[#071B38] border border-[#0033A0]/60 rounded-3xl p-6 sm:p-10 shadow-2xl"
           >
             {errorMessage && (
               <div className="mb-6 p-4 rounded-xl bg-red-950/50 border border-red-500/50 text-red-200 text-xs flex items-center gap-3">
@@ -499,7 +502,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
             {/* Form Section 1: Customer Contact Details */}
             <div className="mb-8">
-              <h3 className="text-xs uppercase font-bold tracking-widest text-amber-400 mb-4 flex items-center gap-2">
+              <h3 className="text-xs uppercase font-bold tracking-widest text-[#FF5500] mb-4 flex items-center gap-2">
                 <User className="w-4 h-4" />
                 <span>1. Passenger & Contact Information</span>
               </h3>
@@ -507,11 +510,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Full Name */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Full Name <span className="text-amber-500">*</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Full Name <span className="text-[#FF5500]">*</span>
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       name="fullName"
@@ -519,18 +522,18 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder="e.g. Marcus Vance"
-                      className="w-full pl-10 pr-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 {/* Phone Number */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Phone Number <span className="text-amber-500">*</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Phone Number <span className="text-[#FF5500]">*</span>
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="tel"
                       name="phone"
@@ -538,25 +541,25 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+1 (780) 000-0000"
-                      className="w-full pl-10 pr-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 {/* Email Address */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Email Address <span className="text-stone-500">(For digital receipt)</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Email Address <span className="text-slate-400">(For digital receipt)</span>
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="name@executive.com"
-                      className="w-full pl-10 pr-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                     />
                   </div>
                 </div>
@@ -564,13 +567,13 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             </div>
 
             {/* Form Section 2: Google Places Autocomplete Itinerary & Route */}
-            <div className="mb-8 pt-6 border-t border-stone-800">
+            <div className="mb-8 pt-6 border-t border-[#0033A0]/40">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xs uppercase font-bold tracking-widest text-amber-400 flex items-center gap-2">
+                <h3 className="text-xs uppercase font-bold tracking-widest text-[#FF5500] flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
                   <span>2. Google Maps Autocomplete Route & Schedule</span>
                 </h3>
-                <span className="text-[10px] text-stone-400 uppercase font-semibold tracking-wider hidden sm:inline-block">
+                <span className="text-[10px] text-slate-300 uppercase font-bold tracking-wider hidden sm:inline-block">
                   Live Distance & Fare Calculated
                 </span>
               </div>
@@ -599,51 +602,51 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 />
               </div>
 
-              {/* Driving Route Live Distance & Duration Badge (Fastest GPS Route Guaranteed via Anthony Henday Ring Road) */}
-              <div className="mb-4 p-3.5 rounded-xl bg-[#16161b] border border-stone-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+              {/* Driving Route Live Distance & Duration Badge */}
+              <div className="mb-4 p-3.5 rounded-xl bg-[#041122] border border-[#0033A0]/50 flex flex-wrap items-center justify-between gap-3 text-xs">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 flex-shrink-0">
+                  <div className="p-2 rounded-lg bg-[#FF5500]/15 text-[#FF5500] flex-shrink-0">
                     <Route className="w-4 h-4" />
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-bold text-white">
                         {isCalculatingRoute ? (
-                          <span className="flex items-center gap-1.5 text-stone-400">
-                            <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
+                          <span className="flex items-center gap-1.5 text-slate-400">
+                            <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FF5500]" />
                             <span>Computing fastest GPS route...</span>
                           </span>
                         ) : (
                           <span>
-                            Fastest GPS Route: <strong className="text-amber-400 font-cinzel text-sm">{routeMetrics?.distanceKm || 31.4} km</strong>{' '}
-                            <span className="text-stone-400 text-[11px]">({routeMetrics?.distanceMiles || 19.5} miles)</span>
+                            Fastest GPS Route: <strong className="text-[#FF5500] font-cinzel text-sm">{routeMetrics?.distanceKm || 31.4} km</strong>{' '}
+                            <span className="text-slate-400 text-[11px]">({routeMetrics?.distanceMiles || 19.5} miles)</span>
                           </span>
                         )}
                       </span>
-                      <span className="px-2 py-0.5 rounded-md bg-amber-950/60 border border-amber-500/30 text-amber-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                        <Zap className="w-2.5 h-2.5 text-amber-400" />
+                      <span className="px-2 py-0.5 rounded-md bg-[#071B38] border border-[#0033A0] text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                        <Zap className="w-2.5 h-2.5 text-[#FF5500]" />
                         <span>Fastest Route</span>
                       </span>
                       {(routeMetrics?.northOfYellowhead || isNorthOfYellowhead(pickupDetails) || isNorthOfYellowhead(dropoffDetails)) && (
-                        <span className="px-2 py-0.5 rounded-md bg-blue-950/60 border border-blue-500/30 text-blue-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                          <Navigation className="w-2.5 h-2.5 text-blue-400" />
+                        <span className="px-2 py-0.5 rounded-md bg-[#0033A0]/50 border border-[#0033A0] text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                          <Navigation className="w-2.5 h-2.5 text-[#FF5500]" />
                           <span>Via Anthony Henday (North of Yellowhead)</span>
                         </span>
                       )}
                     </div>
-                    <p className="text-stone-400 text-[11px] mt-0.5">
+                    <p className="text-slate-400 text-[11px] mt-0.5">
                       {routeMetrics?.routeSummary || 'Fastest GPS Route (Live Traffic Optimized)'}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1.5 text-stone-300">
-                    <Timer className="w-3.5 h-3.5 text-amber-400" />
+                  <div className="flex items-center gap-1.5 text-slate-300">
+                    <Timer className="w-3.5 h-3.5 text-[#FF5500]" />
                     <span>Driving Time: <strong className="text-white">{routeMetrics?.durationText || '26 mins'}</strong></span>
                   </div>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-[10px] font-semibold flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" />
+                  <span className="px-2 py-0.5 rounded-full bg-[#0033A0]/40 border border-[#0033A0] text-white text-[10px] font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-[#FF5500]" />
                     <span>Traffic Optimized</span>
                   </span>
                 </div>
@@ -653,54 +656,54 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Pickup Date */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Pickup Date <span className="text-amber-500">*</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Pickup Date <span className="text-[#FF5500]">*</span>
                   </label>
                   <div className="relative">
-                    <CalendarIcon className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <CalendarIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="date"
                       name="pickupDate"
                       required
                       value={formData.pickupDate}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 {/* Pickup Time */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Pickup Time <span className="text-amber-500">*</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Pickup Time <span className="text-[#FF5500]">*</span>
                   </label>
                   <div className="relative">
-                    <Clock className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Clock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="time"
                       name="pickupTime"
                       required
                       value={formData.pickupTime}
                       onChange={handleChange}
-                      className="w-full pl-10 pr-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 {/* Flight Number */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Flight Number <span className="text-stone-500">(Optional • For live tracking)</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Flight Number <span className="text-slate-400">(Optional • For live tracking)</span>
                   </label>
                   <div className="relative">
-                    <Plane className="w-4 h-4 text-amber-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Plane className="w-4 h-4 text-[#FF5500] absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       name="flightNumber"
                       value={formData.flightNumber}
                       onChange={handleChange}
                       placeholder="e.g. AC 165 or WS 234"
-                      className="w-full pl-10 pr-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                      className="w-full pl-10 pr-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                     />
                   </div>
                 </div>
@@ -708,8 +711,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             </div>
 
             {/* Form Section 3: Vehicle & Party Details */}
-            <div className="mb-8 pt-6 border-t border-stone-800">
-              <h3 className="text-xs uppercase font-bold tracking-widest text-amber-400 mb-4 flex items-center gap-2">
+            <div className="mb-8 pt-6 border-t border-[#0033A0]/40">
+              <h3 className="text-xs uppercase font-bold tracking-widest text-[#FF5500] mb-4 flex items-center gap-2">
                 <Car className="w-4 h-4" />
                 <span>3. Vehicle Selection & Capacity</span>
               </h3>
@@ -717,14 +720,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Vehicle Type */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
-                    Vehicle Type <span className="text-amber-500">*</span>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    Vehicle Type <span className="text-[#FF5500]">*</span>
                   </label>
                   <select
                     name="vehicleType"
                     value={formData.vehicleType}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none font-medium"
+                    className="w-full px-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none font-medium"
                   >
                     <option value="gmc-yukon-denali">2026 GMC Yukon Denali XL (SUV)</option>
                     <option value="lincoln-navigator">Lincoln Navigator L (SUV)</option>
@@ -734,14 +737,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
                 {/* Passengers */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                     Number of Passengers
                   </label>
                   <select
                     name="passengers"
                     value={formData.passengers}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                    className="w-full px-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                   >
                     {[1, 2, 3, 4, 5, 6, 7].map((num) => (
                       <option key={num} value={num}>
@@ -753,14 +756,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
 
                 {/* Luggage */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                     Number of Checked Luggage
                   </label>
                   <select
                     name="luggage"
                     value={formData.luggage}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none"
+                    className="w-full px-4 py-3 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none"
                   >
                     {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => (
                       <option key={num} value={num}>
@@ -773,8 +776,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             </div>
 
             {/* Form Section 4: Special Instructions & Promo Code */}
-            <div className="mb-8 pt-6 border-t border-stone-800">
-              <h3 className="text-xs uppercase font-bold tracking-widest text-amber-400 mb-4 flex items-center gap-2">
+            <div className="mb-8 pt-6 border-t border-[#0033A0]/40">
+              <h3 className="text-xs uppercase font-bold tracking-widest text-[#FF5500] mb-4 flex items-center gap-2">
                 <FileText className="w-4 h-4" />
                 <span>4. Additional Requests</span>
               </h3>
@@ -782,7 +785,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 {/* Special Instructions */}
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                     Special Instructions / Notes
                   </label>
                   <textarea
@@ -791,67 +794,67 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                     value={formData.specialInstructions}
                     onChange={handleChange}
                     placeholder="e.g. Inside baggage meet & greet, child safety seat, gate access code, beverage preference..."
-                    className="w-full px-4 py-2.5 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none resize-none"
+                    className="w-full px-4 py-2.5 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none resize-none"
                   />
                 </div>
 
                 {/* Promo Code */}
                 <div>
-                  <label className="block text-xs font-semibold text-stone-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                     Promo / Corporate Code
                   </label>
                   <div className="relative">
-                    <Tag className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Tag className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       name="promoCode"
                       value={formData.promoCode}
                       onChange={handleChange}
-                      placeholder="e.g. ROYALTY10"
-                      className="w-full pl-10 pr-4 py-2.5 bg-[#18181d] border border-stone-700 focus:border-amber-500 rounded-xl text-white text-xs sm:text-sm focus:outline-none uppercase"
+                      placeholder="e.g. OILERSVIP"
+                      className="w-full pl-10 pr-4 py-2.5 bg-[#041122] border border-slate-700 focus:border-[#FF5500] rounded-xl text-white text-xs sm:text-sm focus:outline-none uppercase"
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Live Fare Summary Display (Live updates on address, vehicle, pax, luggage) */}
+            {/* Live Fare Summary Display */}
             {formData.calculatedFare && formData.calculatedFare.totalPrice > 0 ? (
-              <div className="mb-8 p-6 rounded-2xl bg-gradient-to-br from-[#18181d] via-[#141419] to-[#0f0f13] border-2 border-amber-500/40 shadow-2xl shadow-amber-500/10 animate-in fade-in-50 duration-300">
-                <div className="flex flex-wrap items-center justify-between pb-4 mb-4 border-b border-stone-800 gap-2">
+              <div className="mb-8 p-6 rounded-2xl bg-[#041122] border-2 border-[#0033A0]/70 shadow-2xl animate-in fade-in-50 duration-300">
+                <div className="flex flex-wrap items-center justify-between pb-4 mb-4 border-b border-[#0033A0]/40 gap-2">
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+                    <div className="p-2 rounded-xl bg-[#FF5500]/20 text-[#FF5500]">
                       <Sparkles className="w-5 h-5" />
                     </div>
                     <div>
                       <h4 className="font-cinzel text-base sm:text-lg font-bold text-white tracking-wide">
                         Live Guaranteed Fare Summary
                       </h4>
-                      <p className="text-[11px] text-stone-400">
+                      <p className="text-[11px] text-slate-400">
                         {formData.calculatedFare.isAirportRoute ? 'YEG Airport Chauffeur Transfer Rate' : 'Direct Chauffeur Point-to-Point Rate'}
                       </p>
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-xs font-bold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span className="px-3 py-1 rounded-full bg-[#0033A0]/40 border border-[#0033A0] text-white text-xs font-bold flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#FF5500]" />
                     <span>Real-time Calculation</span>
                   </span>
                 </div>
 
                 <div className="space-y-3.5 text-sm">
                   {/* Estimated Driving Distance */}
-                  <div className="flex items-center justify-between text-stone-300">
-                    <span className="text-stone-400 font-medium">Estimated Driving Distance:</span>
+                  <div className="flex items-center justify-between text-slate-300">
+                    <span className="text-slate-400 font-medium">Estimated Driving Distance:</span>
                     <span className="font-bold text-white font-mono text-base">
                       {formData.calculatedFare.distanceKm.toFixed(1)} km
                     </span>
                   </div>
 
                   {/* Base Fare */}
-                  <div className="flex items-center justify-between text-stone-300">
+                  <div className="flex items-center justify-between text-slate-300">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-stone-400 font-medium">Base Fare:</span>
-                      <span className="text-[11px] text-amber-400/90 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-semibold">
+                      <span className="text-slate-400 font-medium">Base Fare:</span>
+                      <span className="text-[11px] text-white bg-[#0033A0]/50 px-2 py-0.5 rounded border border-[#0033A0] font-semibold">
                         {formData.calculatedFare.bracketDescription}
                       </span>
                     </div>
@@ -861,11 +864,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                   </div>
 
                   {/* Additional Charge */}
-                  <div className="flex items-center justify-between text-stone-300">
+                  <div className="flex items-center justify-between text-slate-300">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-stone-400 font-medium">Additional Charge:</span>
+                      <span className="text-slate-400 font-medium">Additional Charge:</span>
                       {formData.calculatedFare.suvCharge > 0 ? (
-                        <span className="text-[11px] text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30 font-semibold">
+                        <span className="text-[11px] text-white bg-[#FF5500]/20 px-2 py-0.5 rounded border border-[#FF5500]/40 font-semibold">
                           {formData.vehicleType !== 'luxury-sedan'
                             ? 'SUV Request (+$20)'
                             : formData.passengers > 3
@@ -873,14 +876,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                             : '>3 Checked Luggage (+$20)'}
                         </span>
                       ) : (
-                        <span className="text-[11px] text-stone-500">
+                        <span className="text-[11px] text-slate-400">
                           $0.00 (Standard Sedan • ≤3 Pax • ≤3 Luggage)
                         </span>
                       )}
                     </div>
                     <span
                       className={`font-bold font-mono text-base ${
-                        formData.calculatedFare.suvCharge > 0 ? 'text-amber-400' : 'text-stone-400'
+                        formData.calculatedFare.suvCharge > 0 ? 'text-[#FF5500]' : 'text-slate-400'
                       }`}
                     >
                       ${formData.calculatedFare.suvCharge.toFixed(2)}
@@ -888,8 +891,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                   </div>
 
                   {/* GST 5% */}
-                  <div className="flex items-center justify-between text-stone-300">
-                    <span className="text-stone-400 font-medium">GST (5%):</span>
+                  <div className="flex items-center justify-between text-slate-300">
+                    <span className="text-slate-400 font-medium">GST (5%):</span>
                     <span className="font-bold text-white font-mono text-base">
                       ${formData.calculatedFare.gstAmount.toFixed(2)}
                     </span>
@@ -897,32 +900,32 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 </div>
 
                 {/* Final Total Line */}
-                <div className="mt-5 pt-4 border-t border-stone-800 flex flex-wrap items-center justify-between gap-2">
+                <div className="mt-5 pt-4 border-t border-[#0033A0]/40 flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <span className="text-xs uppercase tracking-widest font-bold text-stone-400 block">
+                    <span className="text-xs uppercase tracking-widest font-bold text-slate-400 block">
                       Total Fare (CAD)
                     </span>
-                    <span className="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5">
-                      <Check className="w-3 h-3" />
+                    <span className="text-[11px] text-white flex items-center gap-1 mt-0.5">
+                      <Check className="w-3 h-3 text-[#FF5500]" />
                       <span>All Taxes & Road Surcharges Included</span>
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-cinzel text-3xl sm:text-4xl font-extrabold text-gold-gradient">
+                    <span className="font-cinzel text-3xl sm:text-4xl font-extrabold text-[#FF5500]">
                       ${formData.calculatedFare.totalPrice.toFixed(2)}
                     </span>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="mb-8 p-5 rounded-2xl bg-[#141418] border border-amber-500/30 text-center flex flex-col items-center justify-center">
-                <div className="p-2.5 rounded-full bg-amber-500/10 text-amber-400 mb-2">
+              <div className="mb-8 p-5 rounded-2xl bg-[#041122] border border-[#0033A0]/50 text-center flex flex-col items-center justify-center">
+                <div className="p-2.5 rounded-full bg-[#FF5500]/15 text-[#FF5500] mb-2">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <h4 className="font-cinzel text-sm sm:text-base font-bold text-white mb-1">
                   Select Valid Pickup & Drop-Off Locations Above
                 </h4>
-                <p className="text-xs text-stone-400 max-w-md">
+                <p className="text-xs text-slate-300 max-w-md">
                   Choose your pickup and destination from the Google Places autocomplete suggestions to calculate live driving distance and guaranteed luxury chauffeur pricing.
                 </p>
               </div>
@@ -932,7 +935,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-black font-extrabold text-sm uppercase tracking-wider shadow-xl shadow-amber-500/25 flex items-center justify-center gap-3 cursor-pointer transition-transform hover:-translate-y-0.5 disabled:opacity-50"
+              className="w-full py-4.5 rounded-xl bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] hover:from-[#FFA040] hover:to-[#FF5500] text-white font-black text-sm uppercase tracking-wider shadow-xl shadow-[#FF5500]/30 flex items-center justify-center gap-3 cursor-pointer transition-transform hover:-translate-y-0.5 disabled:opacity-50 border border-orange-300/40"
             >
               {loading ? (
                 <>
@@ -941,15 +944,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <Send className="w-5 h-5 text-black" />
+                  <Send className="w-5 h-5 text-white" />
                   <span>Submit Booking Request</span>
                 </>
               )}
             </button>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-[11px] text-stone-400">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-300">
               <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#FF5500]" />
                 <span>Instant dispatch notification to +1 (587) 728-2828</span>
               </span>
               <span>•</span>
