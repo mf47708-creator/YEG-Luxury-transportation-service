@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Calendar, Menu, X, Shield, Sparkles, Clock, Smartphone } from 'lucide-react';
+import { Phone, Calendar, Menu, X, Shield, Sparkles, Clock, Smartphone, Instagram, Facebook } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 interface NavbarProps {
@@ -105,6 +105,29 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Phone className="w-3.5 h-3.5 text-[#C9A45C]" />
               <span>+1 (587) 728-2828</span>
             </a>
+
+            <div className="flex items-center gap-1 pl-2 border-l border-white/10">
+              <a
+                href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#A7A7A7] hover:text-[#E2C27A] transition-colors p-1 rounded hover:bg-[#151515]"
+                aria-label="Instagram"
+                title="Follow us on Instagram"
+              >
+                <Instagram className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#A7A7A7] hover:text-[#E2C27A] transition-colors p-1 rounded hover:bg-[#151515]"
+                aria-label="Facebook"
+                title="Follow us on Facebook"
+              >
+                <Facebook className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -237,6 +260,31 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center justify-between text-xs text-[#A7A7A7] pt-2 px-1">
                 <span>Edmonton • YEG Airport • Alberta</span>
                 <span className="text-[#C9A45C] font-bold">24/7 Available</span>
+              </div>
+
+              {/* Social Channels in Mobile Menu */}
+              <div className="pt-2 border-t border-white/10 flex items-center justify-between px-1">
+                <span className="text-xs text-neutral-400 font-medium">Follow Air Time:</span>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#151515] border border-white/10 text-[#F5F3EE] hover:text-[#E2C27A] text-xs font-semibold"
+                  >
+                    <Instagram className="w-3.5 h-3.5 text-[#C9A45C]" />
+                    <span>Instagram</span>
+                  </a>
+                  <a
+                    href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#151515] border border-white/10 text-[#F5F3EE] hover:text-[#E2C27A] text-xs font-semibold"
+                  >
+                    <Facebook className="w-3.5 h-3.5 text-[#C9A45C]" />
+                    <span>Facebook</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

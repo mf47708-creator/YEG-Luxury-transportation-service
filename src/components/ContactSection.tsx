@@ -9,7 +9,9 @@ import {
   Building2,
   Plane,
   Shield,
-  MessageSquare
+  MessageSquare,
+  Instagram,
+  Facebook
 } from 'lucide-react';
 
 interface ContactSectionProps {
@@ -168,6 +170,47 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   <span className="text-[11px] text-[#A7A7A7] block">
                     Serving Edmonton International Airport (YEG) & Greater Alberta
                   </span>
+                </div>
+              </div>
+
+              {/* Official Social Media Channels */}
+              <div className="p-5 rounded-2xl bg-[#151515] border border-white/10 shadow-md">
+                <span className="text-xs uppercase font-bold text-[#C9A45C] block mb-1">
+                  Official Social Channels
+                </span>
+                <p className="text-xs text-[#A7A7A7] mb-3.5">
+                  Follow us for real-time fleet updates, Edmonton events, and passenger stories:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <a
+                    href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-[#080808] hover:bg-[#202020] border border-white/10 hover:border-[#C9A45C]/60 text-[#F5F3EE] hover:text-[#E2C27A] flex items-center gap-2.5 text-xs font-bold transition-all shadow-sm group"
+                  >
+                    <div className="p-1.5 rounded-lg bg-[#151515] text-[#C9A45C] group-hover:scale-110 transition-transform">
+                      <Instagram className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="block leading-tight">Instagram</span>
+                      <span className="text-[10px] text-neutral-400 font-normal">@airtimeblacksuv</span>
+                    </div>
+                  </a>
+
+                  <a
+                    href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-[#080808] hover:bg-[#202020] border border-white/10 hover:border-[#C9A45C]/60 text-[#F5F3EE] hover:text-[#E2C27A] flex items-center gap-2.5 text-xs font-bold transition-all shadow-sm group"
+                  >
+                    <div className="p-1.5 rounded-lg bg-[#151515] text-[#C9A45C] group-hover:scale-110 transition-transform">
+                      <Facebook className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="block leading-tight">Facebook</span>
+                      <span className="text-[10px] text-neutral-400 font-normal">Air Time Chauffeur</span>
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
