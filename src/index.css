@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    /* Luxury Chauffeur Palette: Deep Black + Charcoal + Champagne Gold + Soft Gold + Ivory White */
+    /* Luxury Chauffeur 3-Colour Palette: Deep Black + Champagne Gold + Royal Red */
     --bg-deep-black: #080808;
     --bg-charcoal: #151515;
     --bg-charcoal-card: #1a1a1a;
@@ -12,10 +12,16 @@
     --gold-soft: #E2C27A;
     --gold-light: #F3DE9A;
     --gold-deep: #A7843B;
+
+    --red-royal: #C8102E;
+    --red-crimson: #B91C1C;
+    --red-bright: #DC2626;
+    --red-deep: #990000;
     
     --text-ivory: #F5F3EE;
     --text-silver: #A7A7A7;
     --border-gold: rgba(201, 164, 92, 0.35);
+    --border-red: rgba(200, 16, 46, 0.4);
     --border-charcoal: rgba(255, 255, 255, 0.08);
   }
 
@@ -65,6 +71,33 @@
 
 .bg-gold-shimmer {
   background: linear-gradient(135deg, #FFF1C5 0%, #E2C27A 35%, #C9A45C 70%, #94722E 100%);
+}
+
+/* Luxury Royal Red gradient and glow */
+.bg-red-luxury {
+  background: linear-gradient(135deg, #E50914 0%, #C8102E 50%, #990000 100%);
+}
+
+.text-red-gradient {
+  background: linear-gradient(135deg, #FF6B6B 0%, #EF4444 50%, #C8102E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glow-red-subtle {
+  box-shadow: 0 0 25px rgba(200, 16, 46, 0.35);
+}
+
+.glow-red-strong {
+  box-shadow: 0 0 35px rgba(200, 16, 46, 0.6);
+}
+
+.border-red-subtle {
+  border-color: rgba(200, 16, 46, 0.4);
+}
+
+.border-red-highlight {
+  border-color: rgba(229, 9, 20, 0.7);
 }
 
 .bg-charcoal-card {

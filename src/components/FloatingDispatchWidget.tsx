@@ -14,16 +14,16 @@ export const FloatingDispatchWidget: React.FC<FloatingDispatchWidgetProps> = ({
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2.5">
       {/* Floating Action Menu Buttons */}
       <div className="flex items-center gap-2">
-        {/* Direct Call Quick Pill in Charcoal, Ivory White & Champagne Gold */}
+        {/* Direct Call Quick Pill in Royal Red, Charcoal & Gold */}
         <a
           href="tel:+15877282828"
           onClick={() => {
             onOpenCall();
           }}
-          className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#151515] border border-white/20 hover:border-[#C9A45C] text-[#F5F3EE] hover:text-[#E2C27A] shadow-xl backdrop-blur-md text-xs font-bold uppercase tracking-wider transition-all duration-200 hover:scale-105 cursor-pointer group"
+          className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] hover:from-[#DC2626] hover:to-[#B91C1C] border border-red-500/50 text-white shadow-xl backdrop-blur-md text-xs font-bold uppercase tracking-wider transition-all duration-200 hover:scale-105 cursor-pointer group shadow-red-950/50"
         >
-          <span className="w-2 h-2 rounded-full bg-[#C9A45C] animate-ping" />
-          <Phone className="w-3.5 h-3.5 fill-current text-[#C9A45C] group-hover:animate-bounce" />
+          <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+          <Phone className="w-3.5 h-3.5 fill-current text-white group-hover:animate-bounce" />
           <span>Call Dispatch (+1 587-728-2828)</span>
         </a>
 

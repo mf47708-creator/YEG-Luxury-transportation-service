@@ -252,8 +252,8 @@ export const DispatchDrawer: React.FC<DispatchDrawerProps> = ({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2.5">
               <div className="relative">
-                <span className="w-3 h-3 rounded-full bg-[#C9A45C] block" />
-                <span className="w-3 h-3 rounded-full bg-[#C9A45C] animate-ping absolute inset-0 opacity-75" />
+                <span className="w-3 h-3 rounded-full bg-[#C8102E] block" />
+                <span className="w-3 h-3 rounded-full bg-[#C8102E] animate-ping absolute inset-0 opacity-75" />
               </div>
               <div>
                 <h3 className="font-cinzel text-lg font-bold text-[#F5F3EE] flex items-center gap-2">
@@ -442,7 +442,7 @@ export const DispatchDrawer: React.FC<DispatchDrawerProps> = ({
             
             {/* Primary Tap to Call Card */}
             <div className="p-6 rounded-2xl bg-gradient-to-b from-[#151515] to-[#080808] border border-white/15 text-center relative overflow-hidden shadow-2xl">
-              <div className="w-16 h-16 rounded-full bg-[#C9A45C]/20 border border-[#C9A45C]/40 flex items-center justify-center mx-auto mb-4 text-[#C9A45C] shadow-lg shadow-[#C9A45C]/20">
+              <div className="w-16 h-16 rounded-full bg-[#C8102E]/20 border border-red-500/50 flex items-center justify-center mx-auto mb-4 text-[#EF4444] shadow-lg shadow-red-950/40">
                 <PhoneCall className="w-8 h-8 animate-pulse" />
               </div>
 
@@ -460,9 +460,9 @@ export const DispatchDrawer: React.FC<DispatchDrawerProps> = ({
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a
                   href="tel:+15877282828"
-                  className="w-full sm:w-auto flex-1 py-4 px-6 rounded-xl bg-gradient-to-r from-[#E2C27A] via-[#C9A45C] to-[#A7843B] hover:from-[#FFF1C5] hover:to-[#C9A45C] text-[#080808] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#C9A45C]/30 transition-all cursor-pointer border border-[#FFF1C5]/40"
+                  className="w-full sm:w-auto flex-1 py-4 px-6 rounded-xl bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] hover:from-[#DC2626] hover:to-[#B91C1C] text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-red-950/50 transition-all cursor-pointer border border-red-500/50"
                 >
-                  <Phone className="w-4 h-4 fill-current text-[#080808]" />
+                  <Phone className="w-4 h-4 fill-current text-white" />
                   <span>Tap to Call +1 (587) 728-2828</span>
                 </a>
 

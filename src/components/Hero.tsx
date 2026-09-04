@@ -43,7 +43,7 @@ export const Hero: React.FC<HeroProps> = ({
           <p className="font-serif-luxury italic text-xl sm:text-2xl md:text-3xl text-[#F5F3EE] tracking-wide">
             “We Will Serve You Like Royalty.”
           </p>
-          <div className="w-32 h-[2px] bg-gradient-to-r from-transparent via-[#C9A45C] to-transparent mx-auto mt-2.5" />
+          <div className="w-36 h-[2px] bg-gradient-to-r from-[#C8102E] via-[#C9A45C] to-[#C8102E] mx-auto mt-2.5" />
         </div>
 
         {/* AIRPORT FLAT RATES Button - Champagne Gold Flashing Action with Black Text */}
@@ -81,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({
             <ArrowRight className="w-4 h-4 text-[#080808] transition-transform duration-200 group-hover:translate-x-1" />
           </button>
 
-          {/* 2. Call Now - Charcoal & Gold Outline Button */}
+          {/* 2. Call Now - Royal Red & Gold Button */}
           <a
             href="tel:+15877282828"
             onClick={() => {
@@ -89,9 +89,9 @@ export const Hero: React.FC<HeroProps> = ({
                 onCallNow();
               }
             }}
-            className="w-full sm:w-auto px-8 py-4.5 rounded-xl bg-[#151515] hover:bg-[#202020] border-2 border-[#C9A45C]/60 hover:border-[#E2C27A] text-[#F5F3EE] hover:text-[#E2C27A] font-bold text-sm sm:text-base uppercase tracking-wider shadow-lg shadow-black/60 transition-all duration-200 flex items-center justify-center gap-2.5 group cursor-pointer"
+            className="w-full sm:w-auto px-8 py-4.5 rounded-xl bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] hover:from-[#DC2626] hover:to-[#B91C1C] border-2 border-red-500/60 hover:border-red-400 text-white font-bold text-sm sm:text-base uppercase tracking-wider shadow-xl shadow-red-950/50 transition-all duration-200 flex items-center justify-center gap-2.5 group cursor-pointer transform hover:-translate-y-0.5"
           >
-            <Phone className="w-4 h-4 text-[#C9A45C] group-hover:animate-bounce" />
+            <Phone className="w-4 h-4 text-white group-hover:animate-bounce" />
             <span>Call Now (+1 587-728-2828)</span>
           </a>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, ShieldCheck, Heart, ArrowUp, Star, Plane, Instagram, Facebook } from 'lucide-react';
+import { Phone, Mail, MapPin, ShieldCheck, Heart, ArrowUp, Star, Plane } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
@@ -14,8 +14,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onCallClick }) => {
 
   return (
     <footer className="bg-[#080808] border-t border-[#C9A45C]/20 text-[#A7A7A7] relative overflow-hidden">
-      {/* Top champagne gold accent line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#C9A45C] to-transparent" />
+      {/* Top Black, Gold, and Red accent line */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-[#C8102E] via-[#C9A45C] to-[#C8102E]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
@@ -33,35 +33,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onCallClick }) => {
                 “We Will Serve You Like Royalty.”
               </p>
 
-              <p className="text-[#A7A7A7] text-xs sm:text-sm leading-relaxed max-w-md mb-4">
+              <p className="text-[#A7A7A7] text-xs sm:text-sm leading-relaxed max-w-md mb-6">
                 Air Time Black Car & SUV Service is Edmonton’s premier executive chauffeur provider.
                 Specializing in seamless Edmonton International Airport (YEG) transfers, corporate travel, wedding elegance, and VIP event logistics across Alberta.
               </p>
-
-              {/* Social Channels */}
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-xs text-neutral-400 font-semibold">Follow Us:</span>
-                <a
-                  href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#151515] hover:bg-[#222222] border border-white/10 hover:border-[#C9A45C]/50 text-[#F5F3EE] hover:text-[#E2C27A] text-xs font-semibold transition-all group"
-                  aria-label="Follow Air Time on Instagram"
-                >
-                  <Instagram className="w-3.5 h-3.5 text-[#C9A45C] group-hover:scale-110 transition-transform" />
-                  <span>Instagram</span>
-                </a>
-                <a
-                  href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#151515] hover:bg-[#222222] border border-white/10 hover:border-[#C9A45C]/50 text-[#F5F3EE] hover:text-[#E2C27A] text-xs font-semibold transition-all group"
-                  aria-label="Connect with Air Time on Facebook"
-                >
-                  <Facebook className="w-3.5 h-3.5 text-[#C9A45C] group-hover:scale-110 transition-transform" />
-                  <span>Facebook</span>
-                </a>
-              </div>
             </div>
 
             <div className="flex items-center gap-3 text-xs text-[#A7A7A7]">
@@ -199,34 +174,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onCallClick }) => {
                   Edmonton, Alberta, Canada
                 </span>
               </div>
-
-              <div className="pt-2">
-                <span className="text-[10px] uppercase font-bold text-neutral-500 block mb-2">
-                  Social Channels:
-                </span>
-                <div className="flex items-center gap-2">
-                  <a
-                    href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg bg-[#151515] hover:bg-[#222222] border border-white/10 hover:border-[#C9A45C]/50 text-[#C9A45C] hover:text-[#E2C27A] transition-all"
-                    title="Instagram @airtimeblacksuv"
-                    aria-label="Air Time Instagram"
-                  >
-                    <Instagram className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg bg-[#151515] hover:bg-[#222222] border border-white/10 hover:border-[#C9A45C]/50 text-[#C9A45C] hover:text-[#E2C27A] transition-all"
-                    title="Air Time on Facebook"
-                    aria-label="Air Time Facebook"
-                  >
-                    <Facebook className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -238,29 +185,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onCallClick }) => {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <a
-                href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-neutral-400 hover:text-[#E2C27A] transition-colors p-1"
-                aria-label="Instagram"
-                title="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-neutral-400 hover:text-[#E2C27A] transition-colors p-1"
-                aria-label="Facebook"
-                title="Facebook"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-            </div>
-            <span>•</span>
             <span className="hover:text-[#A7A7A7]">Edmonton, Alberta</span>
             <span>•</span>
             <span className="hover:text-[#A7A7A7]">Privacy & Terms</span>

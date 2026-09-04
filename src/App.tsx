@@ -195,23 +195,23 @@ export function App() {
       />
 
       {/* Mobile Sticky Quick Action Bar */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#030c1a]/95 backdrop-blur-lg border-t border-[#0033A0]/50 p-3 flex items-center gap-3 shadow-2xl">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#080808]/95 backdrop-blur-lg border-t border-[#C9A45C]/40 p-3 flex items-center gap-3 shadow-2xl">
         <a
           href="tel:+15877282828"
           onClick={() => {
             handleInitiateCall();
           }}
-          className="flex-1 py-3 rounded-xl bg-[#071B38] border-2 border-white/80 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md"
+          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] hover:from-[#DC2626] hover:to-[#B91C1C] border border-red-500/50 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-red-950/40"
         >
-          <Phone className="w-4 h-4 text-[#FF5500]" />
+          <Phone className="w-4 h-4 text-white" />
           <span>Call Dispatch</span>
         </a>
 
         <button
           onClick={() => handleNavigate('booking')}
-          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#FF7700] via-[#FF5500] to-[#E63900] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#FF5500]/30 cursor-pointer border border-orange-300/40"
+          className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#E2C27A] via-[#C9A45C] to-[#A7843B] text-[#080808] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-[#C9A45C]/30 cursor-pointer border border-[#FFF1C5]/50"
         >
-          <Calendar className="w-4 h-4 text-white" />
+          <Calendar className="w-4 h-4 text-[#080808]" />
           <span>Book Chauffeur</span>
         </button>
       </div>

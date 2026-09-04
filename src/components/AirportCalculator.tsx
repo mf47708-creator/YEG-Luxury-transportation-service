@@ -298,7 +298,7 @@ export const AirportCalculator: React.FC<AirportCalculatorProps> = ({ onApplyToB
             {hasAirport ? (
               <div className="bg-[#151515] border border-white/15 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
                 {/* Ribbon badge */}
-                <div className="absolute top-0 right-0 bg-[#C9A45C] text-[#080808] text-[10px] uppercase font-black tracking-widest px-4 py-1 rounded-bl-xl shadow-md">
+                <div className="absolute top-0 right-0 bg-gradient-to-r from-[#C8102E] to-[#990000] text-white text-[10px] uppercase font-black tracking-widest px-4 py-1 rounded-bl-xl shadow-md border-b border-l border-red-500/50">
                   Guaranteed Flat Rate
                 </div>
 
@@ -424,14 +424,14 @@ export const AirportCalculator: React.FC<AirportCalculatorProps> = ({ onApplyToB
             {/* Quick 24/7 dispatcher help callout */}
             <div className="bg-[#080808] border border-white/10 rounded-xl p-4 flex items-center justify-between text-xs text-[#A7A7A7]">
               <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#C9A45C]" />
+                <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-pulse" />
                 <span>Need an immediate airport pickup in under 30 mins?</span>
               </span>
               <a
                 href="tel:+15877282828"
-                className="text-[#E2C27A] font-black hover:underline"
+                className="text-[#E2C27A] hover:text-[#FFF1C5] font-black hover:underline flex items-center gap-1"
               >
-                +1 (587) 728-2828
+                <span>+1 (587) 728-2828</span>
               </a>
             </div>
           </div>

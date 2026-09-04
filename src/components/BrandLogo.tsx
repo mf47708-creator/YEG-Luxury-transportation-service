@@ -48,6 +48,13 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'full', classNam
               <stop offset="50%" stopColor="#F5F3EE" />
               <stop offset="100%" stopColor="#D8D5CC" />
             </linearGradient>
+
+            {/* Royal Red Accent Gradient */}
+            <linearGradient id="royalRedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#FF4D4D" />
+              <stop offset="40%" stopColor="#C8102E" />
+              <stop offset="100%" stopColor="#8A0014" />
+            </linearGradient>
           </defs>
 
           {/* Outer Black Disc with Champagne Gold Rim */}
@@ -55,16 +62,17 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'full', classNam
           <circle cx="60" cy="60" r="51" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" opacity="0.8" />
           <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(201,164,92,0.4)" strokeWidth="1" />
 
-          {/* Stylized A / Arrow / Crown Spear (Top segment) */}
+          {/* Stylized A / Arrow / Crown Spear (Top segment) with Royal Red Center Jewel */}
           <path
             d="M60 12 L72 38 L60 48 L48 38 Z"
             fill="url(#champagneGoldGradient)"
           />
+          {/* Royal Red Central Spear Accent */}
           <path
-            d="M58 14 L68 36 L58 44 L48 36 Z"
-            fill="#FFFFFF"
-            opacity="0.9"
+            d="M60 16 L67 36 L60 43 L53 36 Z"
+            fill="url(#royalRedGradient)"
           />
+          <circle cx="60" cy="45" r="3" fill="#C8102E" stroke="#E2C27A" strokeWidth="0.8" />
           <path
             d="M60 15 L78 52 L56 50 L64 36 L50 36 Z"
             fill="url(#champagneGoldGradient)"
@@ -83,7 +91,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'full', classNam
           />
           <path
             d="M27 75 C 38 56, 62 38, 102 34 C 84 40, 64 52, 45 78 C 38 78, 31 77, 27 75 Z"
-            stroke="#FFFFFF"
+            stroke="#C8102E"
             strokeWidth="1.2"
             fill="none"
           />
@@ -122,17 +130,18 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'full', classNam
               AIR TIME
             </span>
             <div className="hidden sm:flex items-center gap-1.5 ml-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#C9A45C] shadow-[0_0_8px_#C9A45C]" />
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E2C27A] shadow-[0_0_6px_#E2C27A]" />
-              <span className="w-1 h-1 rounded-full bg-[#F5F3EE] opacity-80" />
+              <span className="w-2 h-2 rounded-full bg-[#C9A45C] shadow-[0_0_8px_#C9A45C]" title="Gold Prestige" />
+              <span className="w-2 h-2 rounded-full bg-[#C8102E] shadow-[0_0_8px_#C8102E]" title="Red Royalty" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E2C27A]" />
             </div>
           </div>
 
-          {/* BLACK CAR & SUV SERVICE with Champagne Gold styling */}
+          {/* BLACK CAR & SUV SERVICE with Champagne Gold and Red Accent */}
           <div className="flex items-center gap-2 mt-1">
             <span className="text-[9px] md:text-[10px] uppercase font-black tracking-[0.24em] text-[#C9A45C] whitespace-nowrap">
               Black Car & SUV Service
             </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C8102E]" />
           </div>
 
           {variant === 'full' && (

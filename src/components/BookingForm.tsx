@@ -288,13 +288,13 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         }
       }
 
-      // Celebratory Champagne Gold confetti animation
+      // Celebratory Black, Gold, and Red confetti animation
       try {
         confetti({
           particleCount: 90,
           spread: 80,
           origin: { y: 0.6 },
-          colors: ['#C9A45C', '#E2C27A', '#F5F3EE', '#080808', '#FFFFFF']
+          colors: ['#C9A45C', '#E2C27A', '#C8102E', '#080808', '#FFF1C5']
         });
       } catch (err) {
         // Ignore confetti failure

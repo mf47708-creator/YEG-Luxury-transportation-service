@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, Calendar, Menu, X, Shield, Sparkles, Clock, Smartphone, Instagram, Facebook } from 'lucide-react';
+import { Phone, Calendar, Menu, X, Shield, Sparkles, Clock, Smartphone } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 interface NavbarProps {
@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-3.5">
             {/* Live Fleet indicator */}
             <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#151515] border border-[#C9A45C]/40 text-[#F5F3EE] text-[11px] font-semibold shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#C9A45C] animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C8102E] animate-pulse" />
               <span>Chauffeurs On Duty</span>
             </span>
 
@@ -88,9 +88,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={onOpenDispatch}
-              className="text-[11px] uppercase tracking-wider text-[#F5F3EE] hover:text-[#E2C27A] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#151515] hover:bg-[#202020] px-2.5 py-0.5 rounded-full border border-[#C9A45C]/40"
+              className="text-[11px] uppercase tracking-wider text-[#F5F3EE] hover:text-[#E2C27A] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#151515] hover:bg-[#202020] px-2.5 py-0.5 rounded-full border border-red-500/40"
             >
-              <span className="w-2 h-2 rounded-full bg-[#C9A45C] animate-ping inline-block"></span>
+              <span className="w-2 h-2 rounded-full bg-[#C8102E] animate-ping inline-block"></span>
               <span>24/7 Live Desk</span>
             </button>
             <a
@@ -102,32 +102,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               className="flex items-center gap-1.5 font-bold text-[#F5F3EE] hover:text-[#E2C27A] transition-colors cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5 text-[#C9A45C]" />
+              <Phone className="w-3.5 h-3.5 text-[#C8102E]" />
               <span>+1 (587) 728-2828</span>
             </a>
-
-            <div className="flex items-center gap-1 pl-2 border-l border-white/10">
-              <a
-                href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#A7A7A7] hover:text-[#E2C27A] transition-colors p-1 rounded hover:bg-[#151515]"
-                aria-label="Instagram"
-                title="Follow us on Instagram"
-              >
-                <Instagram className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#A7A7A7] hover:text-[#E2C27A] transition-colors p-1 rounded hover:bg-[#151515]"
-                aria-label="Facebook"
-                title="Follow us on Facebook"
-              >
-                <Facebook className="w-3.5 h-3.5" />
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -172,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </div>
 
-          {/* Right Action CTA Buttons: Champagne Gold with Black Text */}
+          {/* Right Action CTA Buttons: Red & Gold with Black */}
           <div className="hidden sm:flex items-center gap-3">
             <a
               href="tel:+15877282828"
@@ -181,9 +158,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onCallClick();
                 }
               }}
-              className="px-3.5 py-2.5 rounded-lg border border-[#C9A45C]/40 bg-[#151515] text-[#F5F3EE] hover:bg-[#202020] hover:border-[#E2C27A] hover:text-[#E2C27A] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all duration-200 cursor-pointer shadow-md"
+              className="px-3.5 py-2.5 rounded-lg border border-red-500/50 bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] text-white hover:from-[#DC2626] hover:to-[#B91C1C] text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-200 cursor-pointer shadow-md shadow-red-950/40"
             >
-              <Phone className="w-3.5 h-3.5 text-[#C9A45C]" />
+              <Phone className="w-3.5 h-3.5 text-white" />
               <span>Call Now</span>
             </a>
 
@@ -205,10 +182,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onCallClick();
                 }
               }}
-              className="p-2 rounded-lg bg-[#151515] border border-[#C9A45C]/40 text-[#C9A45C] cursor-pointer"
+              className="p-2 rounded-lg bg-gradient-to-r from-[#C8102E] to-[#990000] border border-red-500/50 text-white cursor-pointer shadow-md shadow-red-950/40"
               aria-label="Call Air Time"
             >
-              <Phone className="w-4 h-4 text-[#C9A45C]" />
+              <Phone className="w-4 h-4 text-white" />
             </a>
 
             <button
@@ -260,31 +237,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="flex items-center justify-between text-xs text-[#A7A7A7] pt-2 px-1">
                 <span>Edmonton • YEG Airport • Alberta</span>
                 <span className="text-[#C9A45C] font-bold">24/7 Available</span>
-              </div>
-
-              {/* Social Channels in Mobile Menu */}
-              <div className="pt-2 border-t border-white/10 flex items-center justify-between px-1">
-                <span className="text-xs text-neutral-400 font-medium">Follow Air Time:</span>
-                <div className="flex items-center gap-3">
-                  <a
-                    href="https://www.instagram.com/airtimeblacksuv?igsi=MThpYW1mcG9kajgzbQ%3D%3D&utm_source=qr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#151515] border border-white/10 text-[#F5F3EE] hover:text-[#E2C27A] text-xs font-semibold"
-                  >
-                    <Instagram className="w-3.5 h-3.5 text-[#C9A45C]" />
-                    <span>Instagram</span>
-                  </a>
-                  <a
-                    href="https://www.facebook.com/share/18KKr9wMXU/?mibextid=wwXIfr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#151515] border border-white/10 text-[#F5F3EE] hover:text-[#E2C27A] text-xs font-semibold"
-                  >
-                    <Facebook className="w-3.5 h-3.5 text-[#C9A45C]" />
-                    <span>Facebook</span>
-                  </a>
-                </div>
               </div>
             </div>
           </div>

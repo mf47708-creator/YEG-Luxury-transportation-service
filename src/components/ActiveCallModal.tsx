@@ -96,8 +96,8 @@ export const ActiveCallModal: React.FC<ActiveCallModalProps> = ({
         <div className="p-5 border-b border-white/10 bg-[#080808] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <span className="w-3.5 h-3.5 rounded-full bg-[#C9A45C] block" />
-              <span className="w-3.5 h-3.5 rounded-full bg-[#C9A45C] animate-ping absolute inset-0 opacity-75" />
+              <span className="w-3.5 h-3.5 rounded-full bg-[#C8102E] block" />
+              <span className="w-3.5 h-3.5 rounded-full bg-[#C8102E] animate-ping absolute inset-0 opacity-75" />
             </div>
             <div>
               <h3 className="font-cinzel text-base sm:text-lg font-bold text-[#F5F3EE] flex items-center gap-2">
@@ -122,9 +122,9 @@ export const ActiveCallModal: React.FC<ActiveCallModalProps> = ({
           
           {/* Main Calling Card */}
           <div className="text-center p-6 rounded-2xl bg-[#080808] border border-white/10 relative overflow-hidden">
-            <div className="w-20 h-20 rounded-full bg-[#C9A45C]/15 border-2 border-[#C9A45C]/50 flex items-center justify-center mx-auto mb-4 text-[#C9A45C] shadow-xl shadow-[#C9A45C]/20 relative">
-              <PhoneCall className="w-10 h-10 animate-pulse text-[#C9A45C]" />
-              <span className="absolute -bottom-1 px-2 py-0.5 rounded-full bg-[#C9A45C] text-[#080808] text-[9px] font-black uppercase tracking-wider">
+            <div className="w-20 h-20 rounded-full bg-[#C8102E]/20 border-2 border-red-500/60 flex items-center justify-center mx-auto mb-4 text-[#EF4444] shadow-xl shadow-red-950/40 relative">
+              <PhoneCall className="w-10 h-10 animate-pulse text-[#EF4444]" />
+              <span className="absolute -bottom-1 px-2 py-0.5 rounded-full bg-[#C8102E] text-white text-[9px] font-black uppercase tracking-wider shadow-sm">
                 Live
               </span>
             </div>
@@ -145,9 +145,9 @@ export const ActiveCallModal: React.FC<ActiveCallModalProps> = ({
             <div className="flex flex-col sm:flex-row items-center gap-3">
               <a
                 href="tel:+15877282828"
-                className="w-full sm:flex-1 py-4 px-6 rounded-xl bg-gradient-to-r from-[#E2C27A] via-[#C9A45C] to-[#A7843B] hover:from-[#FFF1C5] hover:to-[#C9A45C] text-[#080808] font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-[#C9A45C]/30 transition-all cursor-pointer border border-[#FFF1C5]/40"
+                className="w-full sm:flex-1 py-4 px-6 rounded-xl bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] hover:from-[#DC2626] hover:to-[#B91C1C] text-white font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl shadow-red-950/50 transition-all cursor-pointer border border-red-500/50"
               >
-                <Phone className="w-4 h-4 fill-current text-[#080808]" />
+                <Phone className="w-4 h-4 fill-current text-white" />
                 <span>Call +1 (587) 728-2828</span>
               </a>
 

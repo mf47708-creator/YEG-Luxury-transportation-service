@@ -91,12 +91,12 @@ export const BookingQuotationSection: React.FC<BookingQuotationSectionProps> = (
         {/* Bold Action Banner: CALL US • TEXT US • EMAIL US */}
         <div className="flex items-center justify-center mb-12">
           <div className="px-6 py-3.5 sm:px-10 sm:py-4 rounded-2xl bg-[#151515] border-2 border-[#C9A45C]/40 shadow-xl shadow-black/60 flex items-center justify-center gap-3 sm:gap-6 flex-wrap">
-            <span className="font-cinzel text-base sm:text-xl md:text-2xl font-extrabold text-[#F5F3EE] uppercase tracking-widest flex items-center gap-2">
-              <Phone className="w-5 h-5 text-[#C9A45C]" />
+            <span className="font-cinzel text-base sm:text-xl md:text-2xl font-extrabold text-[#EF4444] uppercase tracking-widest flex items-center gap-2">
+              <Phone className="w-5 h-5 text-[#EF4444]" />
               <span>CALL US</span>
             </span>
             <span className="text-[#C9A45C] text-lg sm:text-2xl font-bold">•</span>
-            <span className="font-cinzel text-base sm:text-xl md:text-2xl font-extrabold text-[#F5F3EE] uppercase tracking-widest flex items-center gap-2">
+            <span className="font-cinzel text-base sm:text-xl md:text-2xl font-extrabold text-[#E2C27A] uppercase tracking-widest flex items-center gap-2">
               <MessageSquare className="w-5 h-5 text-[#E2C27A]" />
               <span>TEXT US</span>
             </span>
@@ -111,20 +111,20 @@ export const BookingQuotationSection: React.FC<BookingQuotationSectionProps> = (
         {/* Three Large, Bold, Highly Visible Contact Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-14">
           {/* 1. CALL US CARD */}
-          <div className="bg-[#151515] border-2 border-white/10 hover:border-[#C9A45C] rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C9A45C]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="bg-[#151515] border-2 border-white/10 hover:border-[#C8102E] rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-all duration-300 group hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8102E]/15 rounded-full blur-3xl pointer-events-none" />
             
             <div>
               <div className="flex items-center justify-between mb-5">
-                <div className="w-16 h-16 rounded-2xl bg-[#080808] border border-[#C9A45C]/40 text-[#C9A45C] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                <div className="w-16 h-16 rounded-2xl bg-[#080808] border border-[#C8102E]/50 text-[#EF4444] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
                   <Phone className="w-8 h-8" />
                 </div>
-                <span className="px-3 py-1 rounded-full bg-[#C9A45C]/15 text-[#E2C27A] text-[11px] font-extrabold uppercase tracking-wider border border-[#C9A45C]/40">
+                <span className="px-3 py-1 rounded-full bg-[#C8102E]/20 text-red-400 text-[11px] font-extrabold uppercase tracking-wider border border-red-500/40">
                   24/7 Priority Line
                 </span>
               </div>
 
-              <span className="text-xs font-extrabold uppercase tracking-widest text-[#A7A7A7] block mb-1">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-[#EF4444] block mb-1">
                 📞 Direct Phone Call
               </span>
               <h3 className="font-cinzel text-2xl sm:text-3xl font-extrabold text-[#F5F3EE] mb-2 tracking-wide">
@@ -162,9 +162,9 @@ export const BookingQuotationSection: React.FC<BookingQuotationSectionProps> = (
               onClick={() => {
                 if (onOpenCallDesk) onOpenCallDesk();
               }}
-              className="w-full py-4 sm:py-4.5 rounded-xl bg-gradient-to-r from-[#E2C27A] via-[#C9A45C] to-[#A7843B] hover:from-[#FFF1C5] hover:to-[#C9A45C] text-[#080808] font-black text-sm sm:text-base uppercase tracking-wider shadow-lg shadow-[#C9A45C]/30 flex items-center justify-center gap-3 transition-all duration-200 cursor-pointer transform group-hover:scale-[1.02] border border-[#FFF1C5]/40"
+              className="w-full py-4 sm:py-4.5 rounded-xl bg-gradient-to-r from-[#C8102E] via-[#B91C1C] to-[#990000] hover:from-[#DC2626] hover:to-[#B91C1C] text-white font-black text-sm sm:text-base uppercase tracking-wider shadow-lg shadow-red-950/50 flex items-center justify-center gap-3 transition-all duration-200 cursor-pointer transform group-hover:scale-[1.02] border border-red-500/50"
             >
-              <Phone className="w-5 h-5 fill-current text-[#080808]" />
+              <Phone className="w-5 h-5 fill-current text-white" />
               <span>CALL NOW</span>
             </a>
           </div>
